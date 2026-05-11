@@ -20,6 +20,8 @@ function init(c) {
   renderConfirmar(c);
   renderFooter(c.footer);
 
+  renderCalendario(c.fecha);
+
   startCountdown(c.fecha);
   initCopy();
   initLightbox();
@@ -230,6 +232,37 @@ function initMusica(cfg) {
       });
     }
   });
+}
+
+// ── Calendario visual ───────────────────────────────
+function renderCalendario(fechaISO) {
+  const card = document.getElementById('calendario-card');
+  if (!card) return;
+  const fecha = new Date(fechaISO);
+  const year = fecha.getFullYear(), month = fecha.getMonth(), day = fecha.getDate();
+  const meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+  const semana = ['L','M','M','J','V','S','D'];
+  let startDow = new Date(year, month, 1).getDay();
+  startDow = startDow === 0 ? 6 : startDow - 1;
+  const totalDias = new Date(year, month + 1, 0).getDate();
+  let celdas = '';
+  for (let i = 0; i < startDow; i++) celdas += '<span class="cal-dia cal-dia--vacio"></span>';
+  for (let d = 1; d <= totalDias; d++) {
+    const dow = (startDow + d - 1) % 7;
+    const esFinde = dow === 5 || dow === 6;
+    const esEvento = d === day;
+    const cls = esEvento ? ' cal-dia--evento' : esFinde ? ' cal-dia--finde' : '';
+    celdas += `<span class="cal-dia${cls}">${d}</span>`;
+  }
+  const nombreDia = fecha.toLocaleDateString('es-AR', { weekday: 'long' });
+  card.innerHTML = `
+    <div class="cal-header">
+      <span class="cal-mes">${meses[month]}</span>
+      <span class="cal-anio">${year}</span>
+    </div>
+    <div class="cal-semana">${semana.map(d => `<span class="cal-dow">${d}</span>`).join('')}</div>
+    <div class="cal-grid">${celdas}</div>
+    <p class="cal-label">${nombreDia.charAt(0).toUpperCase() + nombreDia.slice(1)} · ${day} de ${meses[month]}</p>`;
 }
 
 // ── Add to Calendar ─────────────────────────────────
