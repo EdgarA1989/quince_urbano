@@ -10,6 +10,7 @@ fetch('config.json')
 
 function init(c) {
   aplicarTema(c.tema);
+  renderCover(c);
   renderHero(c);
   renderBienvenida(c.bienvenida);
   renderEvento(c);
@@ -23,11 +24,11 @@ function init(c) {
   renderCalendario(c.fecha);
 
   startCountdown(c.fecha);
+  initCover();
   initCopy();
   initLightbox();
   initMusica(c.musica);
   initCalendar(c);
-  initReveal();
 }
 
 // ── Tema desde config ───────────────────────────────
@@ -41,6 +42,30 @@ function aplicarTema(tema) {
     r.setProperty('--accent-glow', `rgba(${rr},${g},${b},.22)`);
   }
   if (tema.acento2) r.setProperty('--accent2', tema.acento2);
+}
+
+// ── Render cover ────────────────────────────────────
+function renderCover(c) {
+  set('cover-nombre', c.nombre.toUpperCase());
+  set('cover-fecha',  c.fechaDisplay);
+}
+
+// ── Cover (pantalla de entrada) ─────────────────────
+function initCover() {
+  const cover = document.getElementById('cover');
+  const btn   = document.getElementById('btn-cover');
+  if (!cover || !btn) return;
+
+  document.body.style.overflow = 'hidden';
+
+  btn.addEventListener('click', () => {
+    cover.classList.add('opening');
+    document.body.style.overflow = '';
+    setTimeout(() => {
+      cover.style.display = 'none';
+      initReveal();
+    }, 900);
+  });
 }
 
 // ── Render hero ─────────────────────────────────────
@@ -206,8 +231,8 @@ function initMusica(cfg) {
   const btn   = document.getElementById('musica-btn');
   const audio = document.getElementById('audio');
   const waves = document.getElementById('musica-waves');
-  const play  = btn?.querySelector('.icon-play');
-  const pause = btn?.querySelector('.icon-pause');
+  const play = btn?.querySelector('.icon-play');
+  const stop = btn?.querySelector('.icon-stop');
   if (!btn || !audio) return;
 
   let playing = false;
@@ -215,18 +240,21 @@ function initMusica(cfg) {
   btn.addEventListener('click', () => {
     if (playing) {
       audio.pause();
+      audio.currentTime = 0;
       playing = false;
-      play.style.display  = '';
-      pause.style.display = 'none';
+      play.style.display = '';
+      stop.style.display = 'none';
       waves.classList.remove('active');
       btn.classList.remove('playing');
+      btn.setAttribute('aria-label', 'Reproducir');
     } else {
       audio.play().then(() => {
         playing = true;
-        play.style.display  = 'none';
-        pause.style.display = '';
+        play.style.display = 'none';
+        stop.style.display = '';
         waves.classList.add('active');
         btn.classList.add('playing');
+        btn.setAttribute('aria-label', 'Detener');
       }).catch(() => {
         // Archivo no encontrado o bloqueado por el navegador — silencioso
       });
