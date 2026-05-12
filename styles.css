@@ -83,9 +83,9 @@ h1, h2 { line-height: 1; }
   text-align: center;
   overflow: hidden;
   background: var(--bg);
-  transition: opacity 2s cubic-bezier(0.4,0,0.2,1);
+  transition: opacity 2.5s cubic-bezier(0.4,0,0.2,1), transform 2.5s cubic-bezier(0.4,0,0.2,1);
 }
-.cover.opening { opacity: 0; pointer-events: none; }
+.cover.opening { opacity: 0; pointer-events: none; transform: scale(1.04); }
 
 .cover-bg { position: absolute; inset: 0; pointer-events: none; }
 
