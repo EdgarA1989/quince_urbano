@@ -64,7 +64,7 @@ function initCover() {
     setTimeout(() => {
       cover.style.display = 'none';
       initReveal();
-    }, 900);
+    }, 2100);
   });
 }
 
