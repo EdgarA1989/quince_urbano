@@ -231,8 +231,8 @@ function initMusica(cfg) {
   const btn   = document.getElementById('musica-btn');
   const audio = document.getElementById('audio');
   const waves = document.getElementById('musica-waves');
-  const play = btn?.querySelector('.icon-play');
-  const stop = btn?.querySelector('.icon-stop');
+  const play  = btn?.querySelector('.icon-play');
+  const pause = btn?.querySelector('.icon-pause');
   if (!btn || !audio) return;
 
   let playing = false;
@@ -240,21 +240,20 @@ function initMusica(cfg) {
   btn.addEventListener('click', () => {
     if (playing) {
       audio.pause();
-      audio.currentTime = 0;
       playing = false;
-      play.style.display = '';
-      stop.style.display = 'none';
+      play.style.display  = '';
+      pause.style.display = 'none';
       waves.classList.remove('active');
       btn.classList.remove('playing');
       btn.setAttribute('aria-label', 'Reproducir');
     } else {
       audio.play().then(() => {
         playing = true;
-        play.style.display = 'none';
-        stop.style.display = '';
+        play.style.display  = 'none';
+        pause.style.display = '';
         waves.classList.add('active');
         btn.classList.add('playing');
-        btn.setAttribute('aria-label', 'Detener');
+        btn.setAttribute('aria-label', 'Pausar');
       }).catch(() => {
         // Archivo no encontrado o bloqueado por el navegador — silencioso
       });
