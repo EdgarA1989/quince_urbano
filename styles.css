@@ -643,42 +643,66 @@ h1, h2 { line-height: 1; }
 .musica-section .section-label { max-width: var(--max); margin: 0 auto .9rem; display: block; }
 
 .musica-player {
-  display: flex; align-items: center; gap: 1rem;
+  display: flex; align-items: center; gap: 1.1rem;
   max-width: var(--max); margin: 0 auto;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-lg);
+  padding: 1.1rem 1.35rem;
+  position: relative; overflow: hidden;
 }
-.musica-info { flex: 1; min-width: 0; }
+.musica-player::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 15% 50%, var(--accent-glow), transparent 65%);
+  pointer-events: none;
+}
+.musica-info { flex: 1; min-width: 0; position: relative; z-index: 1; }
 .musica-titulo { font-weight: 700; font-size: 1rem; color: var(--white); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.musica-artista { font-size: .78rem; color: var(--muted); margin-top: 2px; }
+.musica-artista { font-size: .75rem; color: var(--muted); margin-top: 3px; }
 
 .musica-btn {
-  width: 50px; height: 50px; border-radius: 50%; flex-shrink: 0;
+  width: 54px; height: 54px; border-radius: 50%; flex-shrink: 0;
   background: var(--accent); color: #fff;
   display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 4px 20px var(--accent-glow);
+  box-shadow: 0 0 24px var(--accent-glow);
   transition: transform var(--trans), box-shadow var(--trans);
+  position: relative; z-index: 1;
 }
-.musica-btn:hover { transform: scale(1.08); }
-.musica-btn svg { width: 13px; height: 13px; }
+.musica-btn::after {
+  content: '';
+  position: absolute; inset: -5px; border-radius: 50%;
+  border: 1.5px solid rgba(224,64,251,.45);
+  animation: playerRing 2.4s ease-in-out infinite;
+  pointer-events: none;
+}
+.musica-btn.playing::after { border-color: rgba(224,64,251,.7); animation-duration: 1.3s; }
+@keyframes playerRing {
+  0%, 100% { transform: scale(1);    opacity: .55; }
+  50%       { transform: scale(1.22); opacity: 0;   }
+}
+.musica-btn:hover { transform: scale(1.07); box-shadow: 0 0 38px var(--accent-glow); }
+.musica-btn svg { width: 14px; height: 14px; }
 .musica-btn .icon-play { margin-left: 2px; }
-.musica-btn.playing { box-shadow: 0 4px 30px var(--accent-glow); }
+.musica-btn.playing { box-shadow: 0 0 36px var(--accent-glow); }
 
 .musica-waves {
-  display: flex; align-items: center; gap: 3px; height: 28px;
+  display: flex; align-items: center; gap: 3px; height: 34px;
+  position: relative; z-index: 1;
 }
 .musica-waves span {
   display: block; width: 3px; border-radius: 2px;
-  background: var(--accent); height: 6px;
-  animation: none;
+  background: var(--accent); height: 4px; opacity: .35;
 }
-.musica-waves.active span { animation: wave .8s ease-in-out infinite; }
-.musica-waves.active span:nth-child(2) { animation-delay: .1s; }
-.musica-waves.active span:nth-child(3) { animation-delay: .2s; }
-.musica-waves.active span:nth-child(4) { animation-delay: .15s; }
-.musica-waves.active span:nth-child(5) { animation-delay: .05s; }
+.musica-waves.active span { animation: wave .75s ease-in-out infinite; opacity: 1; }
+.musica-waves.active span:nth-child(2) { animation-delay: .12s; }
+.musica-waves.active span:nth-child(3) { animation-delay: .24s; }
+.musica-waves.active span:nth-child(4) { animation-delay: .16s; }
+.musica-waves.active span:nth-child(5) { animation-delay: .06s; }
 
 @keyframes wave {
   0%, 100% { height: 4px; }
-  50%       { height: 22px; }
+  50%       { height: 28px; }
 }
 
 /* ══════════════════════════════════════════════════════
