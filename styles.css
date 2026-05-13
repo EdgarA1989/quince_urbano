@@ -746,6 +746,7 @@ h1, h2 { line-height: 1; }
   text-decoration: none;
 }
 .btn-agendar:hover { background: var(--accent); color: #fff; border-color: transparent; }
+.btn-agendar--solo { width: 100%; justify-content: center; }
 
 /* ══════════════════════════════════════════════════════
    FOOTER
